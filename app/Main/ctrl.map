@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "ctrl.js",
+  "sourceRoot": "",
+  "sources": [
+    "ctrl.coffee"
+  ],
+  "names": [],
+  "mappings": ";AAAA;CAAA,CAAA,CAEG,GAFH,GAEG,IAFI;CAGJ,EAAO,GAAA,GAAC,EAAD;CAHV,EAEG;CAFH"
+}

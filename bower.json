@@ -1,0 +1,25 @@
+{
+  "name": "eqn",
+  "version": "0.0.0",
+  "authors": [
+    "Dave Lu <dave792321001730003212345@gmail.com>"
+  ],
+  "description": "A piece of paper to do math on",
+  "main": "app/main.js",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "requirejs": "~2.1.8",
+    "require-css": "~0.0.8",
+    "angular-latest": "~1.1.5",
+    "bootstrap-ui": "~0.6.0",
+    "bootstrap": "~3.0.0",
+    "MathJax": "*"
+  }
+}

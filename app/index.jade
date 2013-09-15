@@ -1,0 +1,11 @@
+doctype 5
+html(lang="en")
+   head
+      meta(charset="utf8")
+   link(href="lib/bootstrap/dist/css/bootstrap.css", rel="stylesheet", type="text/css")
+   link(href="lib/bootstrap/dist/css/bootstrap-theme.css", rel="stylesheet", type="text/css")
+   link(href="base.css", rel="stylesheet", type="text/css")
+   script(data-main="app.js", src="lib/requirejs/require.js")
+
+   body
+      #stage(ng-view)

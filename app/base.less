@@ -1,0 +1,16 @@
+body {
+  background-color: #EEE;
+  .grid(25px, rgba(153, 204, 255, 0.5));
+  width: 2000px;
+  height: 2000px;
+  -webkit-user-select: none;
+}
+
+.grid(@spacing, @color) {
+  background-size: @spacing @spacing;
+  background-image:
+    repeating-linear-gradient(0deg, @color, @color 1px,
+    transparent 0px, transparent @spacing),
+    repeating-linear-gradient(-90deg, @color, @color 1px,
+    transparent 0px, transparent @spacing);
+}
