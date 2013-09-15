@@ -1,5 +1,6 @@
 node_modules
 app/lib
+dev
 .idea
 *.js
 *.css
