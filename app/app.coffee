@@ -32,13 +32,15 @@ require(
     showMathMenu: false
   )
 
-  initialize = ($routeProvider) ->
+  initialize = ($routeProvider, $locationProvider) ->
     $routeProvider.when('/',
       templateUrl: 'Main/view.html'
       controller: MainCtrl
     )
 
     $routeProvider.otherwise({ redirectTo: '/' })
+
+    $locationProvider.html5Mode(true);
 
   app = angular.module('eqn', ['ui.bootstrap'], initialize)
 

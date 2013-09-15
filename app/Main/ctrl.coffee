@@ -1,4 +1,4 @@
 define [
-   'css!./style'
+   'css!./style.less'
 ], ->
    return ($scope) ->

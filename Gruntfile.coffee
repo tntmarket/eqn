@@ -1,15 +1,12 @@
-sourcePaths = (extension) ->
-  ["**/*.#{extension}", '!lib/**']
-
 outType =
   coffee: 'js'
   jade: 'html'
-  less: 'css'
+  less: 'less.css'
 
 devConfig = (inType) ->
   expand: true
   cwd: 'app'
-  src: sourcePaths(inType)
+  src: ["**/*.#{inType}", '!lib/**']
   dest: 'dev/app'
   ext: ".#{outType[inType]}"
 
