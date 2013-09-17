@@ -1,13 +1,13 @@
 outType =
   coffee: 'js'
   jade: 'html'
-  less: 'less.css'
+  less: 'less.css' # keeps webstorm's requirejs file following happy
 
 devConfig = (inType) ->
   expand: true
-  cwd: 'app'
+  cwd: 'dev/src'
   src: ["**/*.#{inType}", '!lib/**']
-  dest: 'dev/app'
+  dest: 'dev'
   ext: ".#{outType[inType]}"
 
 module.exports = (grunt) ->
@@ -15,12 +15,6 @@ module.exports = (grunt) ->
     pkg: grunt.file.readJSON('package.json')
 
     coffee:
-      server:
-        options:
-          sourceMap: false
-          bare: true
-        files:
-          'dev/server.js': 'server.coffee'
       dev: devConfig('coffee')
       options:
         sourceMap: true
@@ -35,20 +29,23 @@ module.exports = (grunt) ->
 
     symlink:
       bower:
-        src: 'app/lib'
-        dest: 'dev/app/lib'
+        src: 'src/lib'
+        dest: 'dev/lib'
+      source:
+        src: 'src'
+        dest: 'dev/src'
 
     shell:
       makeAngular:
         command: 'npm install && grunt package'
         options:
           execOptions:
-            cwd: 'app/lib/angular-latest'
+            cwd: 'src/lib/angular-latest'
       makeBootstrapUi:
         command: 'npm install && grunt'
         options:
           execOptions:
-            cwd: 'app/lib/bootstrap-ui'
+            cwd: 'src/lib/bootstrap-ui'
 
     clean: ['dev']
 
@@ -64,5 +61,5 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks('grunt-shell')
 
   # Define your tasks here
-  grunt.registerTask('default', 'compile dev files', ['coffee', 'less', 'jade', 'symlink'])
+  grunt.registerTask('default', 'compile dev files', ['symlink', 'coffee', 'less', 'jade'])
   grunt.registerTask('deps', 'compile bower dependencies', ['shell'])

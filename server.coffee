@@ -2,14 +2,15 @@ express = require('express')
 app = express()
 
 app.get('/', (req, res) ->
-   res.sendfile('app/index.html')
+  res.sendfile('dev/index.html')
 )
 
 app.configure( ->
-   app.use(express.static(__dirname + '/app'))
+  app.use('/', express.static(__dirname + '/dev'))
 )
+
+console.log(__dirname)
 
 app.listen(8080)
 
 console.log('listening on port 8080')
-
