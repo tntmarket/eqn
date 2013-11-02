@@ -1,6 +1,6 @@
+/lib
+/dev
 node_modules
-src/lib
-dev
 .idea
 *.js
 *.css

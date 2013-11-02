@@ -1,51 +1,39 @@
-require.config(
+require.config
   paths:
-    'angular': 'lib/angular-latest/build/angular'
-    'angularui': 'lib/bootstrap-ui/dist/ui-bootstrap-tpls-0.6.0'
-    'MathJax': 'lib/MathJax/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+    angular: 'lib/angular'
+    MathJax: 'lib/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+    text: 'lib/text'
+    jquery: 'lib/jquery'
   map:
     '*':
-      'css': 'lib/require-css/css'
+      css: 'lib/require-css/css'
+      TweenMax: 'lib/TweenMax'
+
   shim:
-    'angular':
+    angular:
+      deps: ['jquery']
       exports: 'angular'
-    'angularui':
-      deps: ['angular']
-    'MathJax':
+    MathJax:
       exports: 'MathJax'
-)
+    'MathJax':
+      exports: 'Draggable'
 
-require(
-  ['angular',
-   'angularui',
-   'MathJax',
-   'Main/ctrl'],
-(angular, angularui, MathJax, MainCtrl) ->
+require [
+  'angular',
+  'drag_drop/drag_drop',
+  'expression/expression'
+  'paper/paper'
+  'hud/hud'
+  'utils'
+], (angular) ->
 
-  MathJax.Hub.Config(
-    extensions: ['tex2jax.js']
-    jax: ['input/TeX', 'output/HTML-CSS']
-    tex2jax:
-      inlineMath: [
-        ['$', '$']
-      ]
-    messageStyle: 'none'
-    showMathMenu: false
-  )
+  app = angular.module 'eqn', [
+    'dragDrop',
+    'expression',
+    'paper',
+    'hud'
+  ]
 
-  initialize = ($routeProvider, $locationProvider) ->
-    $routeProvider.when('/',
-      templateUrl: 'Main/view.html'
-      controller: MainCtrl
-    )
-
-    $routeProvider.otherwise({ redirectTo: '/' })
-
-    $locationProvider.html5Mode(true);
-
-  app = angular.module('eqn', ['ui.bootstrap'], initialize)
-
-  angular.bootstrap(document, ['eqn'])
+  angular.bootstrap document, ['eqn']
 
   return app
-)
