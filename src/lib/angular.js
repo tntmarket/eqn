@@ -1,0 +1,1 @@
+../../lib/angular-latest/build/angular.js
