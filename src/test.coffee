@@ -5,7 +5,7 @@ do ->
     if /\.spec\.js$/.test file
       tests.push file
 
-  alwaysNeeded = ['angular', 'mocks']
+  alwaysNeeded = ['angular', 'mocks', 'globals']
 
   require.config
     baseUrl: '/base'
@@ -14,6 +14,7 @@ do ->
       angular: 'lib/angular'
       mocks: 'lib/angular-mocks'
       text: 'lib/text'
+      globals: 'globals'
     map:
       '*':
         css: 'lib/require-css/css'

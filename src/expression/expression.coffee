@@ -8,7 +8,7 @@ define [
 
   module.directive 'expression', () ->
     restrict: 'E'
-    template: log template
+    template: template
     transclude: true
     replace: true
     scope: {}
@@ -16,10 +16,10 @@ define [
     controller: ($scope) ->
       $scope.select = () ->
         $scope.selected = true
-        console.log arguments
+        arguments
 
       $scope.unselect = () ->
         $scope.selected = false
-        console.log arguments
+        arguments
 
       $scope.selected = false

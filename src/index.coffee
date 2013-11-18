@@ -15,20 +15,16 @@ require.config
       exports: 'angular'
     MathJax:
       exports: 'MathJax'
-    'MathJax':
-      exports: 'Draggable'
 
 require [
   'angular',
-  'drag_drop/drag_drop',
   'expression/expression'
   'paper/paper'
   'hud/hud'
-  'utils'
+  'globals'
 ], (angular) ->
 
   app = angular.module 'eqn', [
-    'dragDrop',
     'expression',
     'paper',
     'hud'

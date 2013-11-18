@@ -22,6 +22,6 @@
     "requirejs":      "latest",
     "require-css":    "latest",
     "text":           "latest",
-    "tweenmax":       "latest"
+    "greensock":      "latest"
   }
 }

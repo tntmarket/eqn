@@ -1,13 +1,12 @@
-.viewport {
-  position: absolute;
-}
-
 .paper {
-  background-color: #fdf6e3;
-  .grid(30px, rgba(42, 161, 152, 0.35));
-  width: 1000px;
-  height: 1400px;
+  -webkit-transform-origin: top left;
+  position: absolute;
+  background-color: rgb(238, 232, 213);
+  .grid(250px, rgb(192, 196, 187));
+  width: 7000px;
+  height: 4000px;
   color: #002b36;
+  border: 3px solid rgb(192, 196, 187);
 }
 
 .paper > * {
@@ -16,9 +15,12 @@
 
 .grid(@spacing, @color) {
   background-size: @spacing @spacing;
+//  background-image:
+//    repeating-linear-gradient(0deg, @color, @color 1px,
+//    transparent 0px, transparent @spacing),
+//    repeating-linear-gradient(-90deg, @color, @color 1px,
+//    transparent 0px, transparent @spacing);
   background-image:
-    repeating-linear-gradient(0deg, @color, @color 1px,
-    transparent 0px, transparent @spacing),
-    repeating-linear-gradient(-90deg, @color, @color 1px,
-    transparent 0px, transparent @spacing);
+    -webkit-linear-gradient(bottom, @color 4px, transparent 0),
+    -webkit-linear-gradient(right, @color 4px, transparent 0);
 }
