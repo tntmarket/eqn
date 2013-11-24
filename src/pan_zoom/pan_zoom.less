@@ -1,3 +1,15 @@
 .dragging {
+  // we can't use display or visibility cause then the mouse events get GGed
+  opacity: 0;
+}
+
+.drag-proxy {
+  position: absolute;
+  opacity: 0.7;
+  // hack to hide the element but still have it be painted
+  z-index: -1;
+}
+
+.panning {
   cursor: move;
 }

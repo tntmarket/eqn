@@ -3,7 +3,7 @@ require.config
     angular: 'lib/angular'
     MathJax: 'lib/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
     text: 'lib/text'
-    jquery: 'lib/jquery'
+#    jquery: 'lib/jquery'
   map:
     '*':
       css: 'lib/require-css/css'
@@ -11,7 +11,7 @@ require.config
 
   shim:
     angular:
-      deps: ['jquery']
+#      deps: ['jquery']
       exports: 'angular'
     MathJax:
       exports: 'MathJax'
@@ -29,6 +29,8 @@ require [
     'paper',
     'hud'
   ]
+
+#  addEventListener 'beforeunload', -> 'GTFO?'
 
   angular.bootstrap document, ['eqn']
 

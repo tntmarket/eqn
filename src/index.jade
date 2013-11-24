@@ -6,8 +6,13 @@ html(lang="en")
    script(data-main="index.js", src="lib/require.js")
 
    body
+
       //hud
-      paper
-         //expression y = 3x^2 + 4
-         //expression
-         //   input.bare(type="text")
+
+      .paper(ng-controller="paper",
+             ng-click="unselectAll()"
+             ng-dblclick="newItem($event)")
+
+         expression(ng-repeat="expression in expressions",
+            equation="expression.src",
+            x="expression.x", y="expression.y", focus="{{expression.focus}}")

@@ -18,7 +18,6 @@ define [
       maxZoom Infinity
       viewport Infinity, Infinity
       size 100, 100
-      resist 0
 
     viewport = (w, h) ->
       panZoom.viewportWidth = w
@@ -27,10 +26,6 @@ define [
     size = (w, h) ->
       panZoom.initWidth = w
       panZoom.initHeight = h
-
-    resist = (resistance) ->
-      panZoom.edgeResist = resistance
-
 
 
     minZoom = (zoom) ->
@@ -45,6 +40,10 @@ define [
     panShouldBe = (x, y) ->
       panZoom.panX().should.equal x
       panZoom.panY().should.equal y
+
+    excessShouldBe = (x, y) ->
+      panZoom.excessX().should.equal x
+      panZoom.excessY().should.equal y
 
     panningShouldBe = (touching) ->
       panZoom.panning.should.equal touching
@@ -135,30 +134,31 @@ define [
 
      -50           0     25    50
 
- -50   x2──────────┼─────┼─────┼──────────────┐
-       │           ·                          │
-       │           ·                          │
-       │           ·                          │
-       │           ·                          │  x2   = after zoom in
-       │           ·                          │  x1   = initial box
-   0   ┼···········x1·························│  x0.5 = after zoom out
-       │           ·                          │
-       │           ·                          │  •    = scroll pivot
-  25   ┼           ·     x0.5─────────────────┤
-       │           ·     │                    │
-       │           ·     │                    │
-  50   ┼           ·     │     •              │
-       │           ·     │                    │
-       │           ·     │                    │
-       │           ·     │                    │
-       │           ·     │                    │
-       │           ·     │                    │
-       │           ·     │                    │
-       └─────────────────┴────────────────────┘
+ -50   x2──────────┼─────┼─────┼──────────────
+       │           ·
+       │           ·
+       │           ·
+       │           ·                           x2   = after zoom in
+       │           ·                           x1   = initial box
+   0   ┼···········x1························  x0.5 = after zoom out
+       │           ·
+       │           ·                           •    = scroll pivot
+  25   ┼           ·     x0.5────────────────
+       │           ·     │
+       │           ·     │
+  50   ┼           ·     │     •
+       │           ·     │
+       │           ·     │
+       │           ·     │
+       │           ·     │
+       │           ·     │
+       │           ·     │
 
       ###
 
       it "should zoom in around the scroll point", ->
+        viewport     50, 50
+        size         100, 100
         scroll       2, 50, 50
         zoomShouldBe 2
         panShouldBe  -50, -50
@@ -189,7 +189,6 @@ define [
       beforeEach ->
         viewport 100, 100
         size     50, 50
-        resist   0.5
 
       it "snaps back drags past the top left corner", ->
         touch       0, 0
@@ -217,10 +216,15 @@ define [
         untouch()
         panShouldBe 75, 75
 
-      it "resists dragging beyond the top left corner", ->
+      it "doesn't drag beyond the top left corner", ->
         touch       0, 0
         move        -200, -200
-        panShouldBe -100, -100
+        panShouldBe 0, 0
+
+      it "reports excess when dragging beyond the top left corner", ->
+        touch          0, 0
+        move           -200, -200
+        excessShouldBe -200, -200
 
 
     describe "Pan boundaries when larger than viewport", ->
@@ -228,7 +232,6 @@ define [
       beforeEach ->
         viewport 100, 100
         size     150, 150
-        resist   0.5
 
       it "snaps back after exposing the top left viewport corner", ->
         touch       0, 0
@@ -256,10 +259,15 @@ define [
         untouch()
         panShouldBe -200, -200
 
-      it "resists exposing the top left corner", ->
+      it "doesn't expose the top left corner", ->
         touch       0, 0
         move        200, 200
-        panShouldBe 100, 100
+        panShouldBe 0, 0
+
+      it "reports excess when exposing the top left corner", ->
+        touch          0, 0
+        move           200, 200
+        excessShouldBe 200, 200
 
 
 

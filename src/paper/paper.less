@@ -1,26 +1,20 @@
+@grid-color: #d7d6c8;
+@paper-color: #eee8d5;
+
 .paper {
   -webkit-transform-origin: top left;
   position: absolute;
-  background-color: rgb(238, 232, 213);
-  .grid(250px, rgb(192, 196, 187));
-  width: 7000px;
-  height: 4000px;
+  background-color: @paper-color;
+  .grid(100px, @grid-color);
+  width: 7680px;
+  height: 4320px;
   color: #002b36;
-  border: 3px solid rgb(192, 196, 187);
-}
-
-.paper > * {
-  position: absolute;
+//  border: 3px solid @grid-color;
 }
 
 .grid(@spacing, @color) {
   background-size: @spacing @spacing;
-//  background-image:
-//    repeating-linear-gradient(0deg, @color, @color 1px,
-//    transparent 0px, transparent @spacing),
-//    repeating-linear-gradient(-90deg, @color, @color 1px,
-//    transparent 0px, transparent @spacing);
   background-image:
-    -webkit-linear-gradient(bottom, @color 4px, transparent 0),
-    -webkit-linear-gradient(right, @color 4px, transparent 0);
+    -webkit-linear-gradient(bottom, @color 4px, @color 0, transparent 0),
+    -webkit-linear-gradient(right, @color 4px, @color 0, transparent 0);
 }

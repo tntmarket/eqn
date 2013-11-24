@@ -1,13 +1,14 @@
 define [
-#  'TweenMax/CSSPlugin'
-#  'TweenMax/TweenMax'
   'angular'
   'css!./pan_zoom.less'
 ], ->
 
   class PanZoom
-    panX: -> @_panX() - @edgeResist*(@withExceededBoundX @excessX)
-    panY: -> @_panY() - @edgeResist*(@withExceededBoundY @excessY)
+    panX: -> @_panX() - @excessX()
+    panY: -> @_panY() - @excessY()
+
+    excessX: -> @withExceededBoundX @_excessX
+    excessY: -> @withExceededBoundY @_excessY
 
     #without edge resistance
     _panX: -> @_lastPanX + @dDragX()
@@ -16,24 +17,21 @@ define [
     dDragX: -> @_lastMoveX - @_lastTouchX
     dDragY: -> @_lastMoveY - @_lastTouchY
 
-    excessX: (xBound) -> @dDragX() - (xBound - @_lastPanX)
-    excessY: (yBound) -> @dDragY() - (yBound - @_lastPanY)
+    _excessX: (xBound) -> @dDragX() - (xBound - @_lastPanX)
+    _excessY: (yBound) -> @dDragY() - (yBound - @_lastPanY)
 
-    constructor: () ->
+    constructor: ( initX        =0   ,  initY         =0,
+                   @initWidth    =7680, @initHeight    =4320,
+                   @viewportWidth=820 , @viewportHeight=679 ) ->
       @panning = false
 
-      @initWidth     = 7000; @initHeight     = 4000
-      @viewportWidth = 800 ; @viewportHeight = 679
-
-      @edgeResist = 0.92
-
-      @minZoom = 1/4
+      @minZoom = 1/4 - 0.01
       @zoom = 1
       @maxZoom = 1
 
-      @_lastPanX   = 0; @_lastPanY   = 0
-      @_lastTouchX = 0; @_lastTouchY = 0
-      @_lastMoveX  = 0; @_lastMoveY  = 0
+      @_lastPanX   = initX; @_lastPanY   = initY
+      @_lastTouchX = 0;     @_lastTouchY = 0
+      @_lastMoveX  = 0;     @_lastMoveY  = 0
 
     touch: (x, y) ->
       @panning = true
@@ -59,6 +57,9 @@ define [
 
     untouch: ->
       @panning = false
+      @snapToBounds()
+
+    snapToBounds: ->
       @withExceededBoundX @setX
       @withExceededBoundY @setY
 
@@ -92,8 +93,8 @@ define [
     maxX: -> if @width()  < @viewportWidth  then @viewportWidth - @width() else 0
     maxY: -> if @height() < @viewportHeight then @viewportHeight - @height() else 0
 
-    width:  -> @initWidth  * @zoom
-    height: -> @initHeight * @zoom
+    width:  -> Math.round @initWidth*@zoom
+    height: -> Math.round @initHeight*@zoom
 
     setX: (x) ->
       @_lastPanX = x
@@ -113,49 +114,55 @@ define [
       @element.on 'mousedown', @onTouch.bind(this)
       @element.on 'mouseup', @onUntouch.bind(this)
       @element.on 'wheel', @onScroll.bind(this)
+      @setPan()
+      @setZoom()
 
     onTouch: (event) ->
       if event.button == 1
-        @element.addClass 'dragging'
-        @panZoom.touch event.pageX, event.pageY
+        @element.addClass 'panning'
         _document.on 'mousemove', @boundOnMove
+        @panZoom.touch event.clientX, event.clientY
+        @setPan()
 
     onUntouch: (event) ->
       if event.button == 1
-        @element.removeClass 'dragging'
+        @element.removeClass 'panning'
         @panZoom.untouch()
         _document.off 'mousemove'
-        @repaint()
 
     onMove: (event) ->
-      @panZoom.move event.pageX, event.pageY
-      @repaint()
+      @panZoom.move event.clientX, event.clientY
+      @setPan()
 
     onScroll: (event) ->
-      @panZoom.scroll (zoomFactor event.originalEvent.deltaY),
-                      event.originalEvent.offsetX,
-                      event.originalEvent.offsetY
-      @repaint()
+      if not @panZoom.panning
+        #offset doesn't work if scrolling on child events
+        scrollX = event.pageX/@panZoom.zoom
+        scrollY = event.pageY/@panZoom.zoom
+        @panZoom.scroll (zoomFactor event.deltaY), scrollX, scrollY
+        @panZoom.snapToBounds()
+      @setZoom()
+      @setPan()
 
+    setZoom: -> @element.css 'zoom', @panZoom.zoom
 
-    repaint: ->
-      @element.css '-webkit-transform',
-                   transform @panZoom.panX(),
-                             @panZoom.panY(),
-                             @panZoom.zoom
+    setPan: -> scrollTo -@panZoom.panX(), -@panZoom.panY()
 
-  zoomInFactor = 2
-  zoomOutFactor = 1/2
+  zoomInFactor = Math.sqrt(2)
+  zoomOutFactor = 1/Math.sqrt(2)
   zoomFactor = (scrollDelta) ->
     if scrollDelta < 0 then zoomInFactor else zoomOutFactor
 
+  _viewport = angular.element (document.body)
+  exports =
+    PanZoom: PanZoom
+    bindElement: (el, initX=0, initY=0) ->
+      new PanZoomElement(
+        new PanZoom(
+          initX, initY
+          el[0].offsetWidth, el[0].offsetHeight,
+          _viewport[0].offsetWidth, _viewport[0].offsetHeight
+        ), el)
 
-
-  transform = (panX, panY, zoom) ->
-    "matrix(#{zoom}, 0, 0, #{zoom}, #{panX}, #{panY})"
-
-
-  PanZoom: PanZoom
-  bindElement: (el) ->
-    window.pz = new PanZoomElement(new PanZoom(), el)
+  exports
 
