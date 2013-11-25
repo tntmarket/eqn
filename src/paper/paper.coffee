@@ -60,7 +60,11 @@ define [
           src: ''
           focus: true
 
+      $scope.deleteItem = (index) -> $scope.expressions.splice index, 1
+
       $scope.unselectAll = paper.unselectAll.bind paper
+
+      this.deleteItem = $scope.deleteItem
 
       return
 

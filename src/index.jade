@@ -13,6 +13,5 @@ html(lang="en")
              ng-dblclick="newItem($event)")
 
          expression(ng-repeat="expression in expressions", model="expression",
-                    thing="{{expression.src}}",
-                    coords="{{expression.x}}, {{expression.y}}")
+                    expression-id="{{$index}}")
 

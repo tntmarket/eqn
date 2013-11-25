@@ -9,13 +9,16 @@ define [
 
   module.directive 'expression', (paper) ->
     restrict: 'E'
+    require: '^paper'
     template: template
     replace: true
     scope:
       model: '='
 
-    link: (scope) ->
+    link: (scope, el, attr, paperCtrl) ->
       paper.registerItem scope
+
+      index = parseInt attr.expressionId, 10
 
       scope.select = (leftClick) ->
         if not scope.editing and leftClick
@@ -25,6 +28,10 @@ define [
       scope.unselect = ->
         scope.selected = false
         scope.editing = false
+
+      scope.deleteIfEmpty = ->
+        if scope.model.src.length == 0
+          paperCtrl.deleteItem index
 
       scope.selected = false
       scope.editing = scope.model.focus or false
