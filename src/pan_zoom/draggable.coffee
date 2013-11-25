@@ -6,24 +6,27 @@ define [
 
   class DraggableElement
     constructor: (@element, initX, initY, @parentPanZoom) ->
+      @canDrag = true
       @element.on 'mousedown', @recordElementOffset.bind this
       @element.on 'dragstart', @onDragstart.bind this
       @element.on 'dragend', @reTranslate.bind this
       @moveTo initX, initY
 
     recordElementOffset: (event) ->
-      @_offsetX = event.offsetX
-      @_offsetY = event.offsetY
+      if @canDrag
+        @_offsetX = event.offsetX
+        @_offsetY = event.offsetY
 
     reTranslate: (event) ->
-      @element.removeClass 'dragging'
-      zoom = @parentPanZoom.zoom
-      pageX = event.pageX; pageY = event.pageY
-      dropX = (pageX - @_offsetX)/zoom
-      dropY = (pageY - @_offsetY)/zoom
-      if 0 < dropX and dropX < @parentPanZoom.initWidth and
-         0 < dropY and dropY < @parentPanZoom.initHeight
-        @moveTo dropX, dropY
+      if @canDrag
+        @element.removeClass 'dragging'
+        zoom = @parentPanZoom.zoom
+        pageX = event.pageX; pageY = event.pageY
+        dropX = (pageX - @_offsetX)/zoom
+        dropY = (pageY - @_offsetY)/zoom
+        if 0 < dropX and dropX < @parentPanZoom.initWidth and
+           0 < dropY and dropY < @parentPanZoom.initHeight
+          @moveTo dropX, dropY
 
     moveTo: (x, y) ->
       if @onDrop
@@ -32,15 +35,16 @@ define [
       @element.css 'top', y + 'px'
 
     onDragstart: (event) ->
-      @element.addClass 'dragging'
+      if @canDrag
+        @element.addClass 'dragging'
 
-      proxy.attr 'class', @element.attr 'class'
-      proxy.addClass 'drag-proxy'
-      proxy.html @element.html()
+        proxy.attr 'class', @element.attr 'class'
+        proxy.addClass 'drag-proxy'
+        proxy.html @element.html()
 
-      event.dataTransfer.setDragImage proxy[0], @_offsetX, @_offsetY
-      event.dataTransfer.effectAllowed = 'move'
-      event.dataTransfer.setData 'text/plain','crap'
+        event.dataTransfer.setDragImage proxy[0], @_offsetX, @_offsetY
+        event.dataTransfer.effectAllowed = 'move'
+        event.dataTransfer.setData 'text/plain','crap'
 
 
   exports =

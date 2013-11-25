@@ -78,7 +78,7 @@ define [
 
       el.on 'blur', ->
         el.attr 'contenteditable', false
-        scope[attr.editable] = false
+        scope.$apply -> scope[attr.editable] = false
 
       el.on 'keydown', (event) ->
         if event.keyCode == 13

@@ -4,7 +4,7 @@
 
    ng-class="{'expression-selected': selected, 'expression-editing': editing }",
 
-   draggable="true",
+   draggable="{{!editing}}",
 
    editable="editing",
    ng-model="model.src",
