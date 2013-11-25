@@ -1,20 +1,20 @@
 require.config
   paths:
     angular: 'lib/angular'
-    MathJax: 'lib/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+#    MathJax: 'lib/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
     text: 'lib/text'
 #    jquery: 'lib/jquery'
   map:
     '*':
       css: 'lib/require-css/css'
-      TweenMax: 'lib/TweenMax'
+#      TweenMax: 'lib/TweenMax'
 
   shim:
     angular:
-#      deps: ['jquery']
       exports: 'angular'
-    MathJax:
-      exports: 'MathJax'
+#      deps: ['jquery']
+#    MathJax:
+#      exports: 'MathJax'
 
 require [
   'angular',

@@ -15,13 +15,9 @@
   ],
   "dependencies": {
     "angular-latest": "latest",
-    "bootstrap":      "latest",
-    "hammerjs":       "latest",
-    "jquery":         "latest",
-    "MathJax":        "latest",
     "requirejs":      "latest",
     "require-css":    "latest",
     "text":           "latest",
-    "greensock":      "latest"
+    "normalize-css":  "latest"
   }
 }
