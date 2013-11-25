@@ -1,0 +1,14 @@
+.expression(
+   ng-mousedown="select($event.button == 0)",
+   ng-click="$event.stopPropagation()",
+
+   ng-class="{'expression-selected': selected, 'expression-editing': editing }",
+
+   draggable="{{!editing}}",
+
+   editable="editing",
+   ng-model="model.src",
+   spellcheck="false"
+   ng-blur="deleteIfEmpty()",
+)
+

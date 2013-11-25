@@ -1,16 +1,12 @@
-express = require('express')
+express = require 'express'
 app = express()
 
-app.get('/', (req, res) ->
-  res.sendfile('dev/index.html')
-)
+app.get '/', (req, res) ->
+  res.sendfile 'dev/index.html'
 
-app.configure( ->
-  app.use('/', express.static(__dirname + '/dev'))
-)
+app.configure ->
+  app.use '/', express.static (__dirname + '/dev')
 
-console.log(__dirname)
+app.listen 8080
 
-app.listen(8080)
-
-console.log('listening on port 8080')
+console.log 'listening on port 8080'

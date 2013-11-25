@@ -3,27 +3,27 @@ outType =
   jade: 'html'
   less: 'less.css' # keeps webstorm's requirejs file following happy
 
-devConfig = (inType) ->
+developmentBuild = (inType) ->
   expand: true
   cwd: 'dev/src'
-  src: ["**/*.#{inType}", '!lib/**']
+  src: ["**/*.#{inType}"]
   dest: 'dev'
   ext: ".#{outType[inType]}"
 
 module.exports = (grunt) ->
   initConfig =
-    pkg: grunt.file.readJSON('package.json')
+    pkg: grunt.file.readJSON 'package.json'
 
     coffee:
-      dev: devConfig('coffee')
+      dev: developmentBuild 'coffee'
       options:
         sourceMap: true
 
     less:
-      dev: devConfig('less')
+      dev: developmentBuild 'less'
 
     jade:
-      dev: devConfig('jade')
+      dev: developmentBuild 'jade'
       options:
         pretty: true
 
@@ -33,33 +33,27 @@ module.exports = (grunt) ->
         dest: 'dev/lib'
       source:
         src: 'src'
-        dest: 'dev/src'
+        dest: 'dev/src' # for source maps
 
     shell:
       makeAngular:
         command: 'npm install && grunt package'
         options:
           execOptions:
-            cwd: 'src/lib/angular-latest'
-      makeBootstrapUi:
-        command: 'npm install && grunt'
-        options:
-          execOptions:
-            cwd: 'src/lib/bootstrap-ui'
+            cwd: 'lib/angular-latest'
 
     clean: ['dev']
 
   # Configuration goes here
-  grunt.initConfig(initConfig)
+  grunt.initConfig initConfig
 
   # Load plugins here
-  grunt.loadNpmTasks('grunt-contrib-coffee')
-  grunt.loadNpmTasks('grunt-contrib-less')
-  grunt.loadNpmTasks('grunt-contrib-jade')
-  grunt.loadNpmTasks('grunt-contrib-clean')
-  grunt.loadNpmTasks('grunt-contrib-symlink')
-  grunt.loadNpmTasks('grunt-shell')
+  grunt.loadNpmTasks 'grunt-contrib-coffee'
+  grunt.loadNpmTasks 'grunt-contrib-less'
+  grunt.loadNpmTasks 'grunt-contrib-jade'
+  grunt.loadNpmTasks 'grunt-contrib-clean'
+  grunt.loadNpmTasks 'grunt-contrib-symlink'
+  grunt.loadNpmTasks 'grunt-shell'
 
   # Define your tasks here
-  grunt.registerTask('default', 'compile dev files', ['symlink', 'coffee', 'less', 'jade'])
-  grunt.registerTask('deps', 'compile bower dependencies', ['shell'])
+  grunt.registerTask 'default', 'compile dev files', ['symlink', 'coffee', 'less', 'jade']

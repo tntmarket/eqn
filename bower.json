@@ -11,15 +11,13 @@
     "**/.*",
     "node_modules",
     "bower_components",
-    "test",
-    "tests"
+    "dev"
   ],
   "dependencies": {
-    "requirejs": "~2.1.8",
-    "require-css": "~0.0.8",
-    "angular-latest": "~1.1.5",
-    "bootstrap-ui": "~0.6.0",
-    "bootstrap": "~3.0.0",
-    "MathJax": "*"
+    "angular-latest": "latest",
+    "requirejs":      "latest",
+    "require-css":    "latest",
+    "text":           "latest",
+    "normalize-css":  "latest"
   }
 }

@@ -1,11 +1,17 @@
-doctype 5
 html(lang="en")
    head
       meta(charset="utf8")
-   link(href="./lib/bootstrap/dist/css/bootstrap.css", rel="stylesheet", type="text/css")
-   link(href="./lib/bootstrap/dist/css/bootstrap-theme.css", rel="stylesheet", type="text/css")
-   link(href= "./base.less.css", rel="stylesheet", type="text/css")
-   script(data-main="./app.js", src="./lib/requirejs/require.js")
+   //link(href="lib/bootstrap/css/bootstrap.css", rel="stylesheet", type="text/css")
+   link(href="lib/normalize.css", rel="stylesheet", type="text/css")
+   link(href="index.less.css", rel="stylesheet", type="text/css")
+   script(data-main="index.js", src="lib/require.js")
 
    body
-      #stage(ng-view)
+
+      //hud
+
+      .paper(ng-click="unselectAll()"
+             ng-dblclick="newItem($event)")
+
+         expression(ng-repeat="expression in expressions", model="expression")
+
