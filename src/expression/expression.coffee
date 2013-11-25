@@ -7,6 +7,8 @@ define [
 
   module = angular.module 'expression', []
 
+  isBlank = (str) -> !str or !str.match(/\S/)
+
   module.directive 'expression', (paper) ->
     restrict: 'E'
     require: '^paper'
@@ -28,7 +30,7 @@ define [
         scope.editing = false
 
       scope.deleteIfEmpty = ->
-        if scope.model.src.length == 0
+        if isBlank scope.model.src
           paperCtrl.deleteItem scope.model.id
 
       scope.selected = false
@@ -50,12 +52,19 @@ define [
 
 
   range = document.createRange()
+  selection = getSelection()
   focus = (el, offset) ->
-    sel = getSelection()
     range.setStart el[0].firstChild, offset
     range.collapse true
-    sel.removeAllRanges()
-    sel.addRange range
+    selection.removeAllRanges()
+    selection.addRange range
+    el[0].focus()
+
+  focusOne = (el) ->
+    range.setStart el[0].firstChild, 0
+    range.setEnd el[0].firstChild, 1
+    selection.removeAllRanges()
+    selection.addRange range
     el[0].focus()
 
   focusCaret = (el, zoom) ->
@@ -65,7 +74,7 @@ define [
     focus el, offset
 
 
-  module.directive 'editable', (paper) ->
+  module.directive 'editable', (paper, $timeout) ->
     restrict: 'A'
     require: 'ngModel'
     link: (scope, el, attr, ngModel) ->
@@ -92,8 +101,9 @@ define [
           scope.$apply -> scope[attr.editable] = true
           focusCaret el, paper.getZoom()
 
-      scope.$watch attr.editable, (editable) ->
-        el.attr 'contenteditable', editable
-        if editable
-          el[0].focus()
+      if scope.model.focus
+        el.attr 'contenteditable', true
+        $timeout ->
+          focusOne el
+        , 0
 

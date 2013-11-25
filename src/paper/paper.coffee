@@ -68,7 +68,7 @@ define [
         $scope.expressions[id] =
           x: (event.pageX)/paper.getZoom() - 8
           y: (event.pageY)/paper.getZoom() - 17
-          src: ''
+          src: ' '
           id: id
           focus: true
 
