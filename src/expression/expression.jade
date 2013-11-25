@@ -1,13 +1,13 @@
 .expression(
    ng-mousedown="select($event.button == 0)",
    ng-click="$event.stopPropagation()",
-   ng-dblclick="edit($event); $event.stopPropagation()",
 
    ng-class="{'expression-selected': selected, 'expression-editing': editing }",
 
    draggable="true",
+
    editable="editing",
-   submit="unselect()",
-   model="equation"
+   ng-model="model.src",
+   spellcheck="false"
 )
 

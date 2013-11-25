@@ -9,13 +9,11 @@ define [
 
   module.service 'paper', ->
     this.setPanZoom = (panZoom) -> this.panZoom = panZoom
+    this.getZoom = -> this.panZoom.zoom
 
     itemScopes = []
-
     unselect = (itemScope) -> itemScope.unselect()
-
-    this.addItem = (itemScope) -> itemScopes.push itemScope
-
+    this.registerItem = (itemScope) -> itemScopes.push itemScope
     this.unselectAll = -> itemScopes.forEach unselect
 
     return
@@ -32,8 +30,7 @@ define [
       paper.setPanZoom panZoom
       Draggable.setPaper el
 
-
-  module.controller 'paper', ($scope, paper) ->
+    controller: ($scope, paper) ->
       $scope.expressions = [
           x: 100
           y: 100
@@ -58,10 +55,13 @@ define [
 
       $scope.newItem = (event) ->
         $scope.expressions.push
-          x: (event.pageX)/paper.panZoom.zoom - 8
-          y: (event.pageY)/paper.panZoom.zoom - 25
-          src: 'New Equation'
+          x: (event.pageX)/paper.getZoom() - 8
+          y: (event.pageY)/paper.getZoom() - 17
+          src: ''
+          focus: true
 
       $scope.unselectAll = paper.unselectAll.bind paper
+
+      return
 
 

@@ -26,6 +26,8 @@ define [
         @moveTo dropX, dropY
 
     moveTo: (x, y) ->
+      if @onDrop
+        @onDrop x, y
       @element.css 'left', x + 'px'
       @element.css 'top', y + 'px'
 

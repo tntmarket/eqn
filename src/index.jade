@@ -9,10 +9,10 @@ html(lang="en")
 
       //hud
 
-      .paper(ng-controller="paper",
-             ng-click="unselectAll()"
+      .paper(ng-click="unselectAll()"
              ng-dblclick="newItem($event)")
 
-         expression(ng-repeat="expression in expressions",
-            equation="expression.src",
-            x="expression.x", y="expression.y", focus="{{expression.focus}}")
+         expression(ng-repeat="expression in expressions", model="expression",
+                    thing="{{expression.src}}",
+                    coords="{{expression.x}}, {{expression.y}}")
+
