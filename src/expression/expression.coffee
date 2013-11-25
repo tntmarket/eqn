@@ -18,8 +18,6 @@ define [
     link: (scope, el, attr, paperCtrl) ->
       paper.registerItem scope
 
-      index = parseInt attr.expressionId, 10
-
       scope.select = (leftClick) ->
         if not scope.editing and leftClick
           paper.unselectAll()
@@ -31,7 +29,7 @@ define [
 
       scope.deleteIfEmpty = ->
         if scope.model.src.length == 0
-          paperCtrl.deleteItem index
+          paperCtrl.deleteItem scope.model.id
 
       scope.selected = false
       scope.editing = scope.model.focus or false
@@ -60,6 +58,13 @@ define [
     sel.addRange range
     el[0].focus()
 
+  focusCaret = (el, zoom) ->
+    pxFromStart = (event.offsetX - 5)/zoom
+    stringWidth = el[0].clientWidth - 12
+    offset = pxFromStart/stringWidth*(el.text().length)
+    focus el, offset
+
+
   module.directive 'editable', (paper) ->
     restrict: 'A'
     require: 'ngModel'
@@ -84,11 +89,8 @@ define [
         event.stopPropagation()
         if not scope[attr.editable] and event.button == 0
           el.attr 'contenteditable', true
-          pxFromStart = (event.offsetX - 5)/paper.getZoom()
-          stringWidth = el[0].clientWidth - 12
-          offset = pxFromStart/stringWidth*(el.text().length)
           scope.$apply -> scope[attr.editable] = true
-          focus el, offset
+          focusCaret el, paper.getZoom()
 
       scope.$watch attr.editable, (editable) ->
         el.attr 'contenteditable', editable

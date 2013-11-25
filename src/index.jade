@@ -12,6 +12,5 @@ html(lang="en")
       .paper(ng-click="unselectAll()"
              ng-dblclick="newItem($event)")
 
-         expression(ng-repeat="expression in expressions", model="expression",
-                    expression-id="{{$index}}")
+         expression(ng-repeat="expression in expressions", model="expression")
 
