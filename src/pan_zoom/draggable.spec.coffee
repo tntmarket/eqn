@@ -3,6 +3,6 @@ define [
 ], ->
    describe "Draggables", ->
       it "should drag", ->
-         2.should.equal(2)
+         2.should.equal 2
 
 

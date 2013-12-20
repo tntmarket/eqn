@@ -1,20 +1,22 @@
 define [
    './pan_zoom.js'
-], (PanZoom) ->
+], (
+   PanZoom
+) ->
    describe "PanZoom", ->
       panZoom = null
 
-      touch = null;
-      move = null;
-      untouch = null;
+      touch = null
+      move = null
+      untouch = null
       scroll = null
 
       beforeEach ->
          panZoom = new PanZoom.PanZoom()
-         touch = panZoom.touch.bind(panZoom)
-         move = panZoom.move.bind(panZoom)
-         untouch = panZoom.untouch.bind(panZoom)
-         scroll = panZoom.scroll.bind(panZoom)
+         touch = panZoom.touch.bind panZoom
+         move = panZoom.move.bind panZoom
+         untouch = panZoom.untouch.bind panZoom
+         scroll = panZoom.scroll.bind panZoom
          minZoom -Infinity
          maxZoom Infinity
          viewport Infinity, Infinity

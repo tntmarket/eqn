@@ -70,8 +70,7 @@ define [
       selection.addRange range
       el[0].focus()
 
-   focusCaret = (el, zoom) ->
-      pxFromStart = (event.offsetX - 5) / zoom
+   focusBasedOnClick = (el, pxFromStart) ->
       stringWidth = el[0].clientWidth - 12
       offset = pxFromStart / stringWidth * (el.text().length)
       focus el, offset
@@ -104,7 +103,7 @@ define [
                el.attr 'contenteditable', true
                scope.$apply ->
                   scope[attr.editable] = true
-               focusCaret el, paper.getZoom()
+               focusBasedOnClick el, ((event.offsetX - 5) / paper.getZoom())
 
          if scope.model.focus
             el.attr 'contenteditable', true

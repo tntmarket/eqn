@@ -49,7 +49,7 @@ define [
             event.dataTransfer.setData 'text/plain', 'crap'
 
 
-   exports =
+   return (
       setPaper: (paperEl) ->
          paperEl.on 'dragover', (event) ->
             # Lets you actually drop?! Fucking HTML5 DND spec.
@@ -59,11 +59,13 @@ define [
             # prevents following the content as a link or some shit
             event.preventDefault()
 
-         proxy = angular.element '<div style="z-index:-1" class="drag-proxy"></div>'
+         proxy = angular.element (
+            '<div style="z-index:-1" class="drag-proxy"></div>'
+         )
          paperEl.append proxy
 
       bindElement: (el, initX, initY, parentPanZoom) ->
          new DraggableElement(el, initX, initY, parentPanZoom)
-
+   )
 
 
