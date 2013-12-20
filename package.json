@@ -1,30 +1,30 @@
 {
-  "name": "eqn",
-  "version": "0.0.0",
-  "authors": [
-    "Dave Lu <dave792321001730003212345@gmail.com>"
-  ],
-  "description": "A piece of paper to do math on",
-  "license": "MIT",
-  "dependencies": {
-    "express": "~3.0.0"
-  },
-  "devDependencies": {
-    "bower": "latest",
-    "grunt": "latest",
-    "grunt-contrib-clean": "latest",
-    "grunt-contrib-coffee": "latest",
-    "grunt-contrib-jade": "latest",
-    "grunt-contrib-less": "latest",
-    "grunt-contrib-symlink": "latest",
-    "grunt-contrib-requirejs": "latest",
-    "grunt-shell" : "latest",
-    "karma": "latest",
-    "karma-mocha": "latest",
-    "karma-chai": "latest",
-    "karma-chai-plugins": "latest",
-    "karma-coverage": "latest",
-    "karma-sinon": "latest",
-    "karma-sinon-chai": "latest"
-  }
+   "name": "eqn",
+   "version": "0.0.0",
+   "authors": [
+      "Dave Lu <dave792321001730003212345@gmail.com>"
+   ],
+   "description": "A piece of paper to do math on",
+   "license": "MIT",
+   "dependencies": {
+      "express": "~3.0.0"
+   },
+   "devDependencies": {
+      "bower": "latest",
+      "grunt": "latest",
+      "grunt-contrib-clean": "latest",
+      "grunt-contrib-coffee": "latest",
+      "grunt-contrib-jade": "latest",
+      "grunt-contrib-less": "latest",
+      "grunt-contrib-symlink": "latest",
+      "grunt-contrib-requirejs": "latest",
+      "grunt-shell": "latest",
+      "karma": "latest",
+      "karma-mocha": "latest",
+      "karma-chai": "latest",
+      "karma-chai-plugins": "latest",
+      "karma-coverage": "latest",
+      "karma-sinon": "latest",
+      "karma-sinon-chai": "latest"
+   }
 }

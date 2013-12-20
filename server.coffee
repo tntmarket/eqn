@@ -2,10 +2,10 @@ express = require 'express'
 app = express()
 
 app.get '/', (req, res) ->
-  res.sendfile 'dev/index.html'
+   res.sendfile 'dev/index.html'
 
 app.configure ->
-  app.use '/', express.static (__dirname + '/dev')
+   app.use '/', express.static (__dirname + '/dev')
 
 app.listen 8080
 
