@@ -1,4 +1,4 @@
 define ->
-  window.log = (valueToLog) ->
-    console.log valueToLog
-    valueToLog
+   window.log = (valueToLog) ->
+      console.log valueToLog
+      valueToLog

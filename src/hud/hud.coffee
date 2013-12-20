@@ -1,13 +1,15 @@
 define [
-  'angular',
-  'text!./hud.html'
-  'css!./hud.less'
-], (angular, template) ->
+   'angular',
+   'text!./hud.html'
+   'css!./hud.less'
+], (
+   angular,
+   template
+) ->
+   module = angular.module 'hud', []
 
-  module = angular.module 'hud', []
-
-  module.directive 'hud', () ->
-    restrict: 'E'
-    template: log template
-    replace: true
-    scope: {}
+   module.directive 'hud', ->
+      restrict: 'E'
+      template: log template
+      replace: true
+      scope: {}

@@ -1,6 +1,6 @@
 define [
   './draggable.js'
-], () ->
+], ->
 
   describe "Draggables", ->
 

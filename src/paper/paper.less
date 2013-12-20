@@ -2,17 +2,27 @@
 @paper-color: #eee8d5;
 
 .paper {
-  position: absolute;
-  background-color: @paper-color;
-  .grid(100px, @grid-color);
-  width: 7680px;
-  height: 4320px;
-  color: #002b36;
+   position: absolute;
+   background-color: @paper-color;
+   .grid(100px, @grid-color);
+   width: 7680px;
+   height: 4320px;
+   color: #002b36;
 }
 
 .grid(@spacing, @color) {
-  background-size: @spacing @spacing;
-  background-image:
-    -webkit-linear-gradient(bottom, @color 4px, @color 0, transparent 0),
-    -webkit-linear-gradient(right, @color 4px, @color 0, transparent 0);
+   background-size: @spacing @spacing;
+   background-image:
+      -webkit-linear-gradient(
+         bottom,
+         @color 4px,
+         @color 0,
+         transparent 0
+      ),
+      -webkit-linear-gradient(
+         right,
+         @color 4px,
+         @color 0,
+         transparent 0
+      );
 }

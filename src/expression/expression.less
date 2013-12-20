@@ -1,32 +1,32 @@
 @selection-color: rgb(108, 113, 196);
 @editing-color: rgb(38, 139, 210);
+
 .selection-background(@opacity) {
-  background: rgba(38, 139, 210, @opacity);
+   background: rgba(38, 139, 210, @opacity);
 }
 
-
 .expression {
-  font-size: 20px;
-  font-family: monospace;
-  cursor: pointer;
-  white-space: pre-wrap;
+   font-size: 20px;
+   font-family: monospace;
+   cursor: pointer;
+   white-space: pre-wrap;
 
-  position: absolute;
-  display: inline-block;
-  border: 1px solid transparent;
-  padding: 3px 6px 0px 6px;
+   position: absolute;
+   display: inline-block;
+   border: 1px solid transparent;
+   padding: 3px 6px 0px 6px;
 }
 
 .expression-selected {
-  border: 1px solid #268bd2;
-  .selection-background(0.2);
-  z-index: 100;
+   border: 1px solid #268bd2;
+   .selection-background(0.2);
+   z-index: 100;
 }
 
 .expression-editing {
-  cursor: text;
-//  background: #ddd;
-  background: #eee8d5;
-  color: #073642;
-  border: 1px solid #002b36;
+   cursor: text;
+   //  background: #ddd;
+   background: #eee8d5;
+   color: #073642;
+   border: 1px solid #002b36;
 }
