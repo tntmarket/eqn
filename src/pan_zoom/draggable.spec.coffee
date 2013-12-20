@@ -1,11 +1,8 @@
 define [
-  './draggable.js'
+   './draggable.js'
 ], ->
-
-  describe "Draggables", ->
-
-    describe "Dragging and dropping items", ->
+   describe "Draggables", ->
       it "should drag", ->
-        2.should.equal(2)
+         2.should.equal(2)
 
 
