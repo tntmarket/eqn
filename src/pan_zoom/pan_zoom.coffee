@@ -90,10 +90,14 @@ define [
             @_lastMoveX = x;
             @_lastMoveY = y
 
-      minX: -> if @width() < @viewportWidth  then 0 else @viewportWidth - @width()
-      minY: -> if @height() < @viewportHeight then 0 else @viewportHeight - @height()
-      maxX: -> if @width() < @viewportWidth  then @viewportWidth - @width() else 0
-      maxY: -> if @height() < @viewportHeight then @viewportHeight - @height() else 0
+      minX: ->
+         if @width() < @viewportWidth then 0 else @viewportWidth - @width()
+      minY: ->
+         if @height() < @viewportHeight then 0 else @viewportHeight - @height()
+      maxX: ->
+         if @width() < @viewportWidth  then @viewportWidth - @width() else 0
+      maxY: ->
+         if @height() < @viewportHeight then @viewportHeight - @height() else 0
 
       width: ->
          Math.round @initWidth * @zoom
