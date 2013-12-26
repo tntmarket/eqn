@@ -1,11 +1,13 @@
 define [
    'angular'
    'pan_zoom/draggable'
+   'focus/focus'
    'text!./expression.html'
    'css!./expression.less'
 ], (
    angular,
    Draggable,
+   Focus,
    template
 ) ->
    module = angular.module 'expression', []
@@ -54,28 +56,6 @@ define [
          draggable.onDrop = syncXY
 
 
-   range = document.createRange()
-   selection = getSelection()
-   focus = (el, offset) ->
-      range.setStart el[0].firstChild, offset
-      range.collapse true
-      selection.removeAllRanges()
-      selection.addRange range
-      el[0].focus()
-
-   focusOne = (el) ->
-      range.setStart el[0].firstChild, 0
-      range.setEnd el[0].firstChild, 1
-      selection.removeAllRanges()
-      selection.addRange range
-      el[0].focus()
-
-   focusBasedOnClick = (el, pxFromStart) ->
-      stringWidth = el[0].clientWidth - 12
-      offset = pxFromStart / stringWidth * (el.text().length)
-      focus el, offset
-
-
    module.directive 'editable', (paper, $timeout) ->
       restrict: 'A'
       require: 'ngModel'
@@ -103,11 +83,11 @@ define [
                el.attr 'contenteditable', true
                scope.$apply ->
                   scope[attr.editable] = true
-               focusBasedOnClick el, ((event.offsetX - 5) / paper.getZoom())
+               Focus.whereClicked el, event.offsetX, paper.getZoom()
 
          if scope.model.focus
             el.attr 'contenteditable', true
             $timeout ->
-               focusOne el
+               Focus.firstChar el
             , 0
 
