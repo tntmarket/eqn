@@ -26,7 +26,7 @@ define [
       ) ->
          @panning = false
 
-         @minZoom = 1 / 4 - 0.01
+         @minZoom = 1/4 - 0.01
          @zoom = 1
          @maxZoom = 1
 
@@ -87,7 +87,7 @@ define [
 
       move: (x, y) ->
          if @panning
-            @_lastMoveX = x;
+            @_lastMoveX = x
             @_lastMoveY = y
 
       minX: ->
@@ -112,16 +112,15 @@ define [
          @_lastTouchY = @_lastMoveY
 
 
-   _document = angular.element(document)
+   _document = angular.element document
    class PanZoomElement
       constructor: (panZoom, element) ->
          @panZoom = panZoom
          @element = element
-         @boundOnMove = @onMove.bind(this)
-
-         @element.on 'mousedown', @onTouch.bind(this)
-         @element.on 'mouseup', @onUntouch.bind(this)
-         @element.on 'wheel', @onScroll.bind(this)
+         @boundOnMove = @onMove.bind this
+         @element.on 'mousedown', @onTouch.bind this
+         @element.on 'mouseup', @onUntouch.bind this
+         @element.on 'wheel', @onScroll.bind this
          @setPan()
          @setZoom()
 
@@ -158,8 +157,8 @@ define [
       setPan: ->
          scrollTo -@panZoom.panX(), -@panZoom.panY()
 
-   zoomInFactor = Math.sqrt(2)
-   zoomOutFactor = 1 / Math.sqrt(2)
+   zoomInFactor = Math.sqrt 2
+   zoomOutFactor = 1 / Math.sqrt 2
    zoomFactor = (scrollDelta) ->
       if scrollDelta < 0 then zoomInFactor else zoomOutFactor
 
@@ -167,11 +166,12 @@ define [
 
    return (
       PanZoom: PanZoom
-      bindElement: (el, initX = 0, initY = 0) ->
+      bindElement: (el, initX=0, initY=0) ->
          new PanZoomElement(
             new PanZoom(
                initX, initY
                el[0].offsetWidth, el[0].offsetHeight,
                _viewport[0].offsetWidth, _viewport[0].offsetHeight
-            ), el)
+            ), el
+         )
    )
