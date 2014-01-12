@@ -10,6 +10,7 @@ define [
 ) ->
    module = angular.module 'paper', []
 
+
    module.service 'paper', ->
       this.setPanZoom = (panZoom) ->
          this.panZoom = panZoom
@@ -29,8 +30,7 @@ define [
 
    module.service 'uid', ->
       counter = 100
-      getUid = ->
-         (counter += 1)
+      -> (counter += 1)
 
 
    module.directive 'paper', (paper) ->
