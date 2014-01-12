@@ -5,16 +5,16 @@ define [
    'text!./expression.html'
    'css!./expression.less'
 ], (
-   angular,
-   Draggable,
-   Focus,
+   angular
+   Draggable
+   Focus
    template
 ) ->
-   module = angular.module 'expression', []
+   module = angular.module 'expression', ['paper']
 
    isBlank = (str) -> !str or !str.match /\S/
 
-   module.directive 'expression', (paper) ->
+   module.directive 'expression', ->
       restrict: 'E'
       require: '^paper'
       template: template
@@ -22,17 +22,16 @@ define [
       scope:
          model: '='
 
-      link: (scope, el, attr, paperCtrl) ->
-         paper.registerItem scope
-
+      link: (scope, _, __, paperCtrl) ->
          scope.select = (leftClick) ->
             if not scope.editing and leftClick
-               paper.unselectAll()
+               paperCtrl.unselectAll()
                scope.selected = true
 
          scope.unselect = ->
             scope.selected = false
             scope.editing = false
+         paperCtrl.registerDeselector scope.unselect
 
          scope.deleteIfEmpty = ->
             if isBlank scope.model.src
@@ -42,16 +41,16 @@ define [
          scope.editing = scope.model.focus or false
 
 
-   module.directive 'draggable', (paper) ->
+   module.directive 'draggable', (paperSizes) ->
       restrict: 'A'
       link: (scope, el) ->
-         Draggable.bindElement el, paper.panZoom, (x, y) ->
+         Draggable.bindElement el, paperSizes, (x, y) ->
             scope.$apply ->
                scope.model.x = x
                scope.model.y = y
 
    ENTER_KEY = 13
-   module.directive 'editable', (paper, $timeout) ->
+   module.directive 'editable', (paperSizes, $timeout) ->
       restrict: 'A'
       require: 'ngModel'
       link: (scope, el, attr, ngModel) ->
@@ -78,7 +77,7 @@ define [
                el.attr 'contenteditable', true
                scope.$apply ->
                   scope[attr.editable] = true
-               Focus.whereClicked el, event.offsetX, paper.getZoom()
+               Focus.whereClicked el, event.offsetX, paperSizes.zoom()
 
          if scope.model.focus
             el.attr 'contenteditable', true

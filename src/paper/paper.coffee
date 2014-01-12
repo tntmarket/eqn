@@ -4,47 +4,38 @@ define [
    'pan_zoom/draggable'
    'css!./paper.less'
 ], (
-   angular,
-   PanZoom,
+   angular
+   PanZoom
    Draggable
 ) ->
    module = angular.module 'paper', []
 
+   module.service 'paperSizes', ->
+      @panZoom = null
 
-   module.service 'paper', ->
-      this.setPanZoom = (panZoom) ->
-         this.panZoom = panZoom
-      this.getZoom = ->
-         this.panZoom.zoom
-
-      itemScopes = []
-      unselect = (itemScope) ->
-         itemScope.unselect()
-      this.registerItem = (itemScope) ->
-         itemScopes.push itemScope
-      this.unselectAll = ->
-         itemScopes.forEach unselect
+      @zoom = ->
+         @panZoom.zoom
+      @initWidth = ->
+         @panZoom.initWidth
+      @initHeight = ->
+         @panZoom.initHeight
 
       return
 
+   uid_counter = 100
+   uid = -> (uid_counter += 1)
 
-   module.service 'uid', ->
-      counter = 100
-      -> (counter += 1)
-
-
-   module.directive 'paper', (paper) ->
+   module.directive 'paper', (paperSizes) ->
       restrict: 'C'
-      link: (scope, el) ->
+      link: (_, el) ->
          viewport = (angular.element document.body)[0]
          el.css 'width', viewport.offsetWidth * 4 + 'px'
          el.css 'height', viewport.offsetHeight * 4 + 'px'
 
-         panZoom = (PanZoom.bindElement el).panZoom
-         paper.setPanZoom panZoom
+         paperSizes.panZoom = (PanZoom.bindElement el).panZoom
          Draggable.setPaper el
 
-      controller: ($scope, paper, uid) ->
+      controller: ($scope, paperSizes) ->
          $scope.expressions =
             1:
                x: 100
@@ -56,36 +47,26 @@ define [
                y: 200
                src: 'F = -kx'
                id: 2
-            3:
-               x: 300
-               y: 300
-               src: 'z = sqrt(133)'
-               id: 3
-            4:
-               x: 400
-               y: 400
-               src: 'a^2 + b^2 = c^2'
-               id: 4
-            5:
-               x: 500
-               y: 500
-               src: 'sin(2t) = 2 sin(t) cos(t)'
-               id: 5
 
-         $scope.newItem = (event) ->
+         $scope.newItem = (pageX, pageY) ->
             id = uid()
             $scope.expressions[id] =
-               x: (event.pageX) / paper.getZoom() - 8
-               y: (event.pageY) / paper.getZoom() - 17
-               src: ' '
+               x: pageX / paperSizes.zoom() - 8
+               y: pageY / paperSizes.zoom() - 17
                id: id
+               src: ' '
                focus: true
 
-         $scope.deleteItem = (index) ->
+         @deleteItem = $scope.deleteItem = (index) ->
             delete $scope.expressions[index]
 
-         $scope.unselectAll = paper.unselectAll.bind paper
+         deselectors = []
 
-         this.deleteItem = $scope.deleteItem
+         @registerDeselector = (deselect) ->
+            deselectors.push deselect
+
+         @unselectAll = $scope.unselectAll = ->
+            deselectors.forEach (deselect) ->
+               deselect()
 
          return

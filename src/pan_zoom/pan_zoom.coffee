@@ -43,16 +43,16 @@ define [
 
       withExceededBoundX: (doWithBound) ->
          if @_panX() < @minX()
-            doWithBound.call this, @minX()
+            doWithBound.call @, @minX()
          else if @_panX() > @maxX()
-            doWithBound.call this, @maxX()
+            doWithBound.call @, @maxX()
          else
             0
       withExceededBoundY: (doWithBound) ->
          if @_panY() < @minY()
-            doWithBound.call this, @minY()
+            doWithBound.call @, @minY()
          else if @_panY() > @maxY()
-            doWithBound.call this, @maxY()
+            doWithBound.call @, @maxY()
          else
             0
 
@@ -117,10 +117,10 @@ define [
       constructor: (panZoom, element) ->
          @panZoom = panZoom
          @element = element
-         @boundOnMove = @onMove.bind this
-         @element.on 'mousedown', @onTouch.bind this
-         @element.on 'mouseup', @onUntouch.bind this
-         @element.on 'wheel', @onScroll.bind this
+         @boundOnMove = @onMove.bind @
+         @element.on 'mousedown', @onTouch.bind @
+         @element.on 'mouseup', @onUntouch.bind @
+         @element.on 'wheel', @onScroll.bind @
          @setPan()
          @setZoom()
 

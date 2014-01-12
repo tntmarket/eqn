@@ -1,7 +1,7 @@
 define ->
 
    class Draggable
-      constructor: (@parentPanZoom, @onDrop) ->
+      constructor: (@paperSizes, @onDrop) ->
 
       touch: (_xInsideElement, _yInsideElement) ->
          @xInsideElement = _xInsideElement
@@ -9,18 +9,18 @@ define ->
 
       drop: (xFromDocumentLeft, yFromDocumentTop) ->
          # assume zoom doesn't change between pickup and drop
-         dropX = (xFromDocumentLeft - @xInsideElement) / @parentPanZoom.zoom
-         dropY = (yFromDocumentTop - @yInsideElement) / @parentPanZoom.zoom
-         if ( 0 < dropX and dropX < @parentPanZoom.initWidth and
-              0 < dropY and dropY < @parentPanZoom.initHeight )
+         dropX = (xFromDocumentLeft - @xInsideElement) / @paperSizes.zoom()
+         dropY = (yFromDocumentTop - @yInsideElement) / @paperSizes.zoom()
+         if ( 0 < dropX and dropX < @paperSizes.initWidth() and
+              0 < dropY and dropY < @paperSizes.initHeight() )
             @onDrop dropX, dropY
 
 
    class DraggableEventRouter
       constructor: (@element, @draggable) ->
-         @element.on 'mousedown', @recordOffsetInElement.bind this
-         @element.on 'dragstart', @onDragstart.bind this
-         @element.on 'dragend', @reTranslate.bind this
+         @element.on 'mousedown', @recordOffsetInElement.bind @
+         @element.on 'dragstart', @onDragstart.bind @
+         @element.on 'dragend', @reTranslate.bind @
 
       recordOffsetInElement: (event) ->
          @draggable.touch event.offsetX, event.offsetY
@@ -45,8 +45,8 @@ define ->
             # prevents following the content as a link or some shit
             event.preventDefault()
 
-      bindElement: (el, parentPanZoom, onDrop) ->
-         draggable = new Draggable parentPanZoom, onDrop
+      bindElement: (el, paperSizes, onDrop) ->
+         draggable = new Draggable paperSizes, onDrop
          new DraggableEventRouter el, draggable
    )
 

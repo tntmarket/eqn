@@ -17,18 +17,16 @@ require.config
 #      exports: 'MathJax'
 
 require [
-   'angular',
+   'angular'
    'expression/expression'
    'paper/paper'
-   'hud/hud'
    'globals'
 ], (
    angular
 ) ->
    app = angular.module 'eqn', [
-      'expression',
-      'paper',
-      'hud'
+      'expression'
+      'paper'
    ]
 
    #  addEventListener 'beforeunload', -> 'GTFO?'
