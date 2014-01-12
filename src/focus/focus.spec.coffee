@@ -2,19 +2,21 @@ define [
    'angular'
    './focus.js'
 ], (
-   angular,
+   angular
    Focus
-)->
+) ->
    describe "Focus", ->
-
+      el = null
       WIDTH_OF_12PX_M = 10
       SIDE_PADDING = 7
-      el = angular.element "<div style=\"
-         display: inline-block;
-         font-size: 12px;
-         padding: 3px #{SIDE_PADDING}px 3px #{SIDE_PADDING}px;
-      \">MMMMM</div>"
-      (angular.element document.body).append el
+
+      before ->
+         el = angular.element "<div style=\"
+            display: inline-block;
+            font-size: 12px;
+            padding: 3px #{SIDE_PADDING}px 3px #{SIDE_PADDING}px;
+         \">MMMMM</div>"
+         (angular.element document.body).append el
 
       caretShouldBeAt = (caretPosition) ->
          getSelection().anchorOffset.should.equal caretPosition
@@ -40,6 +42,9 @@ define [
       it "puts the caret at the end when right padding is clicked", ->
          Focus.whereClicked el, el[0].clientWidth, 1
          caretShouldBeAt 5
+
+      after ->
+         (angular.element document.body).remove el
 
 
 
