@@ -1,55 +1,41 @@
-define [
-   'angular'
-], (
-   angular
-) ->
-   proxy = null
+define ->
 
-   class DraggableElement
-      constructor: (@element, initX, initY, @parentPanZoom) ->
-         @canDrag = true
-         @element.on 'mousedown', @recordElementOffset.bind this
+   class Draggable
+      constructor: (@parentPanZoom, @onDrop) ->
+
+      touch: (_xInsideElement, _yInsideElement) ->
+         @xInsideElement = _xInsideElement
+         @yInsideElement = _yInsideElement
+
+      drop: (xFromDocumentLeft, yFromDocumentTop) ->
+         # assume zoom doesn't change between pickup and drop
+         dropX = (xFromDocumentLeft - @xInsideElement) / @parentPanZoom.zoom
+         dropY = (yFromDocumentTop - @yInsideElement) / @parentPanZoom.zoom
+         if ( 0 < dropX and dropX < @parentPanZoom.initWidth and
+              0 < dropY and dropY < @parentPanZoom.initHeight )
+            @onDrop dropX, dropY
+
+
+   class DraggableEventRouter
+      constructor: (@element, @draggable) ->
+         @element.on 'mousedown', @recordOffsetInElement.bind this
          @element.on 'dragstart', @onDragstart.bind this
          @element.on 'dragend', @reTranslate.bind this
-         @moveTo initX, initY
 
-      recordElementOffset: (event) ->
-         if @canDrag
-            @_offsetX = event.offsetX
-            @_offsetY = event.offsetY
-
-      reTranslate: (event) ->
-         if @canDrag
-            @element.removeClass 'dragging'
-            zoom = @parentPanZoom.zoom
-            pageX = event.pageX;
-            pageY = event.pageY
-            dropX = (pageX - @_offsetX) / zoom
-            dropY = (pageY - @_offsetY) / zoom
-            if 0 < dropX and dropX < @parentPanZoom.initWidth and
-            0 < dropY and dropY < @parentPanZoom.initHeight
-               @moveTo dropX, dropY
-
-      moveTo: (x, y) ->
-         if @onDrop
-            @onDrop x, y
-         @element.css 'left', x + 'px'
-         @element.css 'top', y + 'px'
+      recordOffsetInElement: (event) ->
+         @draggable.touch event.offsetX, event.offsetY
 
       onDragstart: (event) ->
-         if @canDrag
-            @element.addClass 'dragging'
+         event.dataTransfer.effectAllowed = 'move'
+         event.dataTransfer.setData 'text/plain', @element.text()
 
-            proxy.attr 'class', @element.attr 'class'
-            proxy.addClass 'drag-proxy'
-            proxy.html @element.html()
-
-            event.dataTransfer.setDragImage proxy[0], @_offsetX, @_offsetY
-            event.dataTransfer.effectAllowed = 'move'
-            event.dataTransfer.setData 'text/plain', 'crap'
+      reTranslate: (event) ->
+         @draggable.drop event.pageX, event.pageY
 
 
    return (
+      Draggable: Draggable
+
       setPaper: (paperEl) ->
          paperEl.on 'dragover', (event) ->
             # Lets you actually drop?! Fucking HTML5 DND spec.
@@ -59,13 +45,9 @@ define [
             # prevents following the content as a link or some shit
             event.preventDefault()
 
-         proxy = angular.element (
-            '<div style="z-index:-1" class="drag-proxy"></div>'
-         )
-         paperEl.append proxy
-
-      bindElement: (el, initX, initY, parentPanZoom) ->
-         new DraggableElement(el, initX, initY, parentPanZoom)
+      bindElement: (el, parentPanZoom, onDrop) ->
+         draggable = new Draggable parentPanZoom, onDrop
+         new DraggableEventRouter el, draggable
    )
 
 

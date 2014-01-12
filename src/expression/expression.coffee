@@ -45,17 +45,12 @@ define [
    module.directive 'draggable', (paper) ->
       restrict: 'A'
       link: (scope, el) ->
-         syncXY = (x, y) ->
+         Draggable.bindElement el, paper.panZoom, (x, y) ->
             scope.$apply ->
                scope.model.x = x
                scope.model.y = y
 
-         draggable = Draggable.bindElement el,
-            scope.model.x, scope.model.y, paper.panZoom
-
-         draggable.onDrop = syncXY
-
-
+   ENTER_KEY = 13
    module.directive 'editable', (paper, $timeout) ->
       restrict: 'A'
       require: 'ngModel'
@@ -73,7 +68,7 @@ define [
                scope[attr.editable] = false
 
          el.on 'keydown', (event) ->
-            if event.keyCode == 13
+            if event.keyCode == ENTER_KEY
                event.preventDefault()
                el[0].blur()
 
