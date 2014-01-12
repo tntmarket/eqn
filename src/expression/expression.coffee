@@ -28,10 +28,10 @@ define [
                paperCtrl.unselectAll()
                scope.selected = true
 
-         scope.unselect = ->
+         scope.deselect = ->
             scope.selected = false
             scope.editing = false
-         paperCtrl.registerDeselector scope.unselect
+         paperCtrl.registerDeselector scope.deselect
 
          scope.deleteIfEmpty = ->
             if isBlank scope.model.src
