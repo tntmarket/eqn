@@ -20,7 +20,7 @@ define [
 
       $scope.select = (mouseButton) ->
          if not $scope.editing and mouseButton == LEFT_CLICK
-            $scope.unselectAll()
+            $scope.deselectAll()
             $scope.selected = true
 
       $scope.deselect = ->
@@ -43,7 +43,7 @@ define [
       controller: 'ExpressionCtrl'
       link: (scope, _, __, paperCtrl) ->
          paperCtrl.registerDeselector scope.deselect
-         scope.unselectAll = paperCtrl.unselectAll
+         scope.deselectAll = paperCtrl.deselectAll
          scope.deleteThis = paperCtrl.deleteById.bind paperCtrl, scope.model.id
 
 

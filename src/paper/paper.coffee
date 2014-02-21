@@ -41,10 +41,10 @@ define [
       @registerDeselector = (deselect) ->
          deselectors.push deselect
 
-      @unselectAll = $scope.unselectAll = ->
+      @deselectAll = $scope.deselectAll = ->
          deselectors.forEach (deselect) -> deselect()
 
-      @deleteById = $scope.deleteById = (id) ->
+      @deleteById = (id) ->
          delete $scope.expressions[id]
 
       return
