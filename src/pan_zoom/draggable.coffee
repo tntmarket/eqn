@@ -69,7 +69,8 @@ define [
             event.preventDefault()
 
          ghost = angular.element (
-            '<div class="expression expression-selected drag-ghost"></div>'
+            '<div style="z-index: -1"
+                  class="expression expression-selected drag-ghost"></div>'
          )
          document.body.appendChild ghost[0]
 
