@@ -24,7 +24,7 @@ define [
          draggable.touch 0, 0
          draggable.drop 1001, 1001
          moveTo.should.have.been.calledOnce
-         moveTo.should.have.been.calledWith 1000, 1000
+         moveTo.should.have.been.calledWith 990, 990
 
       it "should call moveTo with 0, 0 on drop beyond top left", ->
          draggable.touch 0, 0

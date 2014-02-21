@@ -20,12 +20,12 @@ define [
          if dropX < 0
             dropX = 0
          else if paperWidth < dropX
-            dropX = paperWidth
+            dropX = paperWidth - 10
 
          if dropY < 0
             dropY = 0
          else if paperHeight < dropY
-            dropY = paperHeight
+            dropY = paperHeight - 10
 
          @onDrop dropX, dropY
 
