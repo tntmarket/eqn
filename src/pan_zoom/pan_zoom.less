@@ -1,3 +1,14 @@
 .panning {
    cursor: move;
 }
+
+.dragging {
+   // we can't use display or visibility cause then the mouse events get GGed
+   opacity: 0;
+}
+
+.drag-ghost {
+   position: absolute;
+   opacity: 1;
+   z-index: -1;
+}

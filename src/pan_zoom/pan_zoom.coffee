@@ -1,7 +1,9 @@
 define [
    'angular'
    'css!./pan_zoom.less'
-], ->
+], (
+   angular
+)->
    class PanZoom
       panX: -> @_panX() - @excessX()
       panY: -> @_panY() - @excessY()
@@ -114,7 +116,7 @@ define [
 
    _document = angular.element document
    class PanZoomElement
-      constructor: (panZoom, element) ->
+      constructor: (panZoom, element, @onZoom) ->
          @panZoom = panZoom
          @element = element
          @boundOnMove = @onMove.bind @
@@ -152,7 +154,8 @@ define [
          @setPan()
 
       setZoom: ->
-         @element.css 'zoom', @panZoom.zoom
+         @element.css '-webkit-transform', "scale(#{@panZoom.zoom})"
+         @onZoom @panZoom.zoom
 
       setPan: ->
          scrollTo -@panZoom.panX(), -@panZoom.panY()
@@ -166,12 +169,12 @@ define [
 
    return (
       PanZoom: PanZoom
-      bindElement: (el, initX=0, initY=0) ->
+      bindElement: (el, onZoom, initX=0, initY=0) ->
          new PanZoomElement(
             new PanZoom(
                initX, initY
                el[0].offsetWidth, el[0].offsetHeight,
                _viewport[0].offsetWidth, _viewport[0].offsetHeight
-            ), el
+            ), el, onZoom
          )
    )

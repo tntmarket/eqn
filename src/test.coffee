@@ -5,8 +5,6 @@ do ->
       if /\.spec\.js$/.test file
          tests.push file
 
-   alwaysNeeded = ['angular', 'mocks', 'globals']
-
    require.config
       baseUrl: '/base'
 
@@ -24,6 +22,6 @@ do ->
          mocks:
             deps: ['angular']
 
-      deps: tests.concat alwaysNeeded
+      deps: tests.concat 'globals'
 
       callback: window.__karma__.start

@@ -16,10 +16,10 @@ define ->
          getSelection().addRange range
          el[0].focus()
 
-      whereClicked: (el, clickXOffset, zoom) ->
+      whereClicked: (el, clickXOffset) ->
          LEFT_PADDING_AND_BORDER = 7
          PADDING_AND_BORDER = 14
-         pxFromStart = (clickXOffset - LEFT_PADDING_AND_BORDER) / zoom
+         pxFromStart = clickXOffset - LEFT_PADDING_AND_BORDER
          stringPxWidth = el[0].clientWidth - PADDING_AND_BORDER
          numChars = el.text().length
          offset = Math.round (pxFromStart / stringPxWidth * numChars)

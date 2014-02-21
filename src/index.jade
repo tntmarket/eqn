@@ -8,7 +8,7 @@ html(lang="en")
    body
 
       .paper(ng-click="unselectAll()"
-             ng-dblclick="newItem($event.pageX, $event.pageY)")
+             ng-dblclick="newItem($event.offsetX, $event.offsetY)")
 
          expression(ng-repeat="expression in expressions"
                     model="expression")

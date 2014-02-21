@@ -1,19 +1,33 @@
-define ->
+define [
+   'angular'
+], (
+   angular
+) ->
+
+   ghost = null
+   paperWidth = 0
+   paperHeight = 0
 
    class Draggable
-      constructor: (@paperSizes, @onDrop) ->
+      constructor: (@onDrop) ->
 
-      touch: (_xInsideElement, _yInsideElement) ->
-         @xInsideElement = _xInsideElement
-         @yInsideElement = _yInsideElement
+      touch: (@xInsideElement, @yInsideElement) ->
 
-      drop: (xFromDocumentLeft, yFromDocumentTop) ->
+      drop: (xFromPaperLeft, yFromPaperTop) ->
          # assume zoom doesn't change between pickup and drop
-         dropX = (xFromDocumentLeft - @xInsideElement) / @paperSizes.zoom()
-         dropY = (yFromDocumentTop - @yInsideElement) / @paperSizes.zoom()
-         if ( 0 < dropX and dropX < @paperSizes.initWidth() and
-              0 < dropY and dropY < @paperSizes.initHeight() )
-            @onDrop dropX, dropY
+         dropX = xFromPaperLeft - @xInsideElement
+         dropY = yFromPaperTop - @yInsideElement
+         if dropX < 0
+            dropX = 0
+         else if paperWidth < dropX
+            dropX = paperWidth
+
+         if dropY < 0
+            dropY = 0
+         else if paperHeight < dropY
+            dropY = paperHeight
+
+         @onDrop dropX, dropY
 
 
    class DraggableEventRouter
@@ -26,11 +40,20 @@ define ->
          @draggable.touch event.offsetX, event.offsetY
 
       onDragstart: (event) ->
+         @element.addClass 'dragging'
+         ghost.html @element.html()
+         ghost.css '-webkit-transform-origin', "#{@draggable.xInsideElement}px
+                                                #{@draggable.yInsideElement}px"
+
+         event.dataTransfer.setDragImage ghost[0], @draggable.xInsideElement,
+                                                   @draggable.yInsideElement
          event.dataTransfer.effectAllowed = 'move'
          event.dataTransfer.setData 'text/plain', @element.text()
 
       reTranslate: (event) ->
-         @draggable.drop event.pageX, event.pageY
+         @element.removeClass 'dragging'
+         @draggable.drop event.offsetX + (parseInt @element.css 'left'),
+                         event.offsetY + (parseInt @element.css 'top')
 
 
    return (
@@ -45,9 +68,22 @@ define ->
             # prevents following the content as a link or some shit
             event.preventDefault()
 
-      bindElement: (el, paperSizes, onDrop) ->
-         draggable = new Draggable paperSizes, onDrop
+         ghost = angular.element (
+            '<div class="expression expression-selected drag-ghost"></div>'
+         )
+         document.body.appendChild ghost[0]
+
+      bindElement: (el, onDrop) ->
+         draggable = new Draggable onDrop
          new DraggableEventRouter el, draggable
+
+      setBounds: (width, height) ->
+         paperWidth = width
+         paperHeight = height
+
+      zoomGhost: (zoom) ->
+         ghost.css '-webkit-transform', "scale(#{zoom})"
    )
+
 
 

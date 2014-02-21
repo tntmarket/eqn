@@ -14,6 +14,25 @@ define [
 
    isBlank = (str) -> !str or !str.match /\S/
 
+   LEFT_CLICK = 0
+   module.controller 'ExpressionCtrl', ($scope) ->
+      $scope.selected = false
+
+      $scope.select = (mouseButton) ->
+         if not $scope.editing and mouseButton == LEFT_CLICK
+            $scope.unselectAll()
+            $scope.selected = true
+
+      $scope.deselect = ->
+         $scope.selected = false
+         $scope.editing = false
+
+      $scope.deleteIfEmpty = ->
+         if isBlank $scope.model.src
+            $scope.deleteThis()
+
+      $scope.editing = $scope.model.focus or false
+
    module.directive 'expression', ->
       restrict: 'E'
       require: '^paper'
@@ -21,36 +40,23 @@ define [
       replace: true
       scope:
          model: '='
-
+      controller: 'ExpressionCtrl'
       link: (scope, _, __, paperCtrl) ->
-         scope.select = (leftClick) ->
-            if not scope.editing and leftClick
-               paperCtrl.unselectAll()
-               scope.selected = true
-
-         scope.deselect = ->
-            scope.selected = false
-            scope.editing = false
          paperCtrl.registerDeselector scope.deselect
-
-         scope.deleteIfEmpty = ->
-            if isBlank scope.model.src
-               paperCtrl.deleteItem scope.model.id
-
-         scope.selected = false
-         scope.editing = scope.model.focus or false
+         scope.unselectAll = paperCtrl.unselectAll
+         scope.deleteThis = paperCtrl.deleteById.bind paperCtrl, scope.model.id
 
 
-   module.directive 'draggable', (paperSizes) ->
+   module.directive 'draggable', ->
       restrict: 'A'
       link: (scope, el) ->
-         Draggable.bindElement el, paperSizes, (x, y) ->
+         Draggable.bindElement el, (x, y) ->
             scope.$apply ->
                scope.model.x = x
                scope.model.y = y
 
    ENTER_KEY = 13
-   module.directive 'editable', (paperSizes, $timeout) ->
+   module.directive 'editable', ($timeout) ->
       restrict: 'A'
       require: 'ngModel'
       link: (scope, el, attr, ngModel) ->
@@ -77,7 +83,7 @@ define [
                el.attr 'contenteditable', true
                scope.$apply ->
                   scope[attr.editable] = true
-               Focus.whereClicked el, event.offsetX, paperSizes.zoom()
+               Focus.whereClicked el, event.offsetX
 
          if scope.model.focus
             el.attr 'contenteditable', true
