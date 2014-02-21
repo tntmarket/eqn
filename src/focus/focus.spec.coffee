@@ -1,6 +1,6 @@
 define [
    'angular'
-   './focus.js'
+   'focus/focus'
 ], (
    angular
    Focus

@@ -1,6 +1,6 @@
 define [
    'angular'
-   './draggable.js'
+   'pan_zoom/draggable'
 ], (
    angular
    Draggable

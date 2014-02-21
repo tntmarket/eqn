@@ -1,7 +1,7 @@
 define [
    'angular'
    'mocks'
-   './paper.js'
+   'paper/paper'
 ], (
    angular
 ) ->

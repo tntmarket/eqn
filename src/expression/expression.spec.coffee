@@ -1,6 +1,6 @@
 define [
    'angular'
-   './expression.js'
+   'expression/expression'
 ], (
    angular
 ) ->

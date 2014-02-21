@@ -26,11 +26,11 @@ define [
             src: 'F = -kx'
             id: 2
 
-      $scope.newItem = (pageX, pageY) ->
+      $scope.newItem = (paperX, paperY) ->
          id = uid()
          $scope.expressions[id] =
-            x: pageX - 8
-            y: pageY - 17
+            x: paperX - 8
+            y: paperY - 17
             id: id
             src: ' '
             focus: true

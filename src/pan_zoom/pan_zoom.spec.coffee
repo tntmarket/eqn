@@ -1,5 +1,5 @@
 define [
-   './pan_zoom.js'
+   'pan_zoom/pan_zoom'
 ], (
    PanZoom
 ) ->
