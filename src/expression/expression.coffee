@@ -15,11 +15,13 @@ define [
    isBlank = (str) -> !str or !str.match /\S/
 
    LEFT_CLICK = 0
+   RIGHT_CLICK = 2
    module.controller 'ExpressionCtrl', ($scope) ->
       $scope.selected = false
 
       $scope.select = (mouseButton) ->
-         if not $scope.editing and mouseButton == LEFT_CLICK
+         if not $scope.editing and (mouseButton == LEFT_CLICK or
+                                    mouseButton == RIGHT_CLICK)
             $scope.deselectAll()
             $scope.selected = true
 
@@ -28,7 +30,8 @@ define [
          $scope.editing = false
 
       $scope.deleteIfEmpty = ->
-         if isBlank $scope.model.src
+         window.x = $scope.model.src
+         if isBlank $scope.model.src.replace (/&nbsp;/g), ''
             $scope.deleteThis()
 
       $scope.editing = $scope.model.focus or false

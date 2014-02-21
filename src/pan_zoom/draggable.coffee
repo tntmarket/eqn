@@ -70,9 +70,10 @@ define [
 
          ghost = angular.element (
             '<div style="z-index: -1"
-                  class="expression expression-selected drag-ghost"></div>'
+                  class="expression expression-selected drag-ghost
+                         default-text-color"></div>'
          )
-         document.body.appendChild ghost[0]
+         paperEl.after ghost[0]
 
       bindElement: (el, onDrop) ->
          draggable = new Draggable onDrop

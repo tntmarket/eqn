@@ -13,6 +13,7 @@ define [
 
       beforeEach inject ($rootScope, $controller) ->
          scope = $rootScope.$new()
+         scope.expressions = {}
          ctrl = $controller 'PaperCtrl', $scope: scope
 
       it "can create new expressions", ->

@@ -5,11 +5,8 @@ html(lang="en")
    link(href="index.less.css", rel="stylesheet", type="text/css")
    script(data-main="index.js", src="lib/require.js")
 
-   body
-
-      .paper(ng-click="deselectAll()"
-             ng-dblclick="newItem($event.offsetX, $event.offsetY)")
-
+   body(ng-controller="MainCtrl")
+      paper
          expression(ng-repeat="expression in expressions"
                     model="expression")
 

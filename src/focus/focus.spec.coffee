@@ -11,12 +11,12 @@ define [
       SIDE_PADDING = 7
 
       before ->
-         el = angular.element "<div style=\"
+         el = $ '<div style="
             display: inline-block;
             font-size: 12px;
             padding: 3px #{SIDE_PADDING}px 3px #{SIDE_PADDING}px;
-         \">MMMMM</div>"
-         (angular.element document.body).append el
+         ">MMMMM</div>'
+         ($ document.body).append el
 
       caretShouldBeAt = (caretPosition) ->
          getSelection().anchorOffset.should.equal caretPosition
@@ -28,23 +28,17 @@ define [
          getSelection().focusOffset.should.equal  1
 
       it "puts the caret next to the clicked character", ->
-         Focus.whereClicked el, WIDTH_OF_12PX_M * 2.1 + SIDE_PADDING, 1
+         Focus.whereClicked el, WIDTH_OF_12PX_M * 2.1 + SIDE_PADDING
          caretShouldBeAt 2
 
       it "puts the caret next to the clicked first character", ->
-         Focus.whereClicked el, WIDTH_OF_12PX_M * 0.1 + SIDE_PADDING, 1
+         Focus.whereClicked el, WIDTH_OF_12PX_M * 0.1 + SIDE_PADDING
          caretShouldBeAt 0
 
       it "puts the caret at the start when left padding is clicked", ->
-         Focus.whereClicked el, 0, 1
+         Focus.whereClicked el, 0
          caretShouldBeAt 0
 
       it "puts the caret at the end when right padding is clicked", ->
-         Focus.whereClicked el, el[0].clientWidth, 1
+         Focus.whereClicked el, el[0].clientWidth
          caretShouldBeAt 5
-
-      after ->
-         (angular.element document.body).remove el
-
-
-

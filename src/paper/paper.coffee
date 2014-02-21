@@ -2,30 +2,23 @@ define [
    'angular'
    'pan_zoom/pan_zoom'
    'pan_zoom/draggable'
+   'text!./paper.html'
    'css!./paper.less'
 ], (
    angular
    PanZoom
    Draggable
+   template
 ) ->
    module = angular.module 'paper', []
+
+   module.service 'body', ->
+      return document.body
 
    uid_counter = 100
    uid = -> (uid_counter += 1)
 
    module.controller 'PaperCtrl', ($scope) ->
-      $scope.expressions =
-         1:
-            x: 100
-            y: 100
-            src: '-0 = 0'
-            id: 1
-         2:
-            x: 200
-            y: 200
-            src: 'F = -kx'
-            id: 2
-
       $scope.newItem = (paperX, paperY) ->
          id = uid()
          $scope.expressions[id] =
@@ -50,14 +43,17 @@ define [
       return
 
    module.directive 'paper', ->
-      restrict: 'C'
+      restrict: 'E'
+      template: template
+      replace: true
+      transclude: true
       controller: 'PaperCtrl'
       link: (_, el) ->
-         viewport = (angular.element document.body)[0]
-         el.css 'width', viewport.offsetWidth * 4 + 'px'
-         el.css 'height', viewport.offsetHeight * 4 + 'px'
+         width = 4000
+         height = 4000
+         el.css 'width',  width + 'px'
+         el.css 'height',  height + 'px'
 
          Draggable.setPaper el
-         Draggable.setBounds (parseInt el.css 'width'),
-                             (parseInt el.css 'height')
+         Draggable.setBounds width, height
          PanZoom.bindElement el, Draggable.zoomGhost

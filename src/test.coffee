@@ -9,6 +9,7 @@ do ->
       baseUrl: '/base'
 
       paths:
+         jquery: 'lib/jquery'
          angular: 'lib/angular'
          mocks: 'lib/angular-mocks'
          text: 'lib/text'
@@ -19,6 +20,7 @@ do ->
       shim:
          angular:
             exports: 'angular'
+            deps: ['jquery']
          mocks:
             deps: ['angular']
 
